@@ -1,0 +1,106 @@
+/* Container עם רקע גראדיאנט ואפקט קל אנימטיבי */
+.auth-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background: linear-gradient(135deg, #ff9a9e, #fad0c4, #a18cd1, #fbc2eb);
+  background-size: 400% 400%;
+  animation: gradientBG 15s ease infinite;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+@keyframes gradientBG {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* Glassmorphism Card */
+.auth-card {
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(15px);
+  border-radius: 25px;
+  padding: 50px 40px;
+  width: 350px;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+  text-align: center;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.auth-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 30px 60px rgba(0,0,0,0.3);
+}
+
+/* Heading */
+.auth-card h2 {
+  margin-bottom: 30px;
+  color: #fff;
+  font-size: 2rem;
+  letter-spacing: 1px;
+  text-shadow: 1px 1px 6px rgba(0,0,0,0.3);
+}
+
+/* Inputs עם הצללה וגבול צבעוני */
+.auth-card input {
+  width: 100%;
+  padding: 12px 15px;
+  margin: 12px 0;
+  border-radius: 15px;
+  border: 1px solid rgba(255,255,255,0.4);
+  background: rgba(255,255,255,0.25);
+  color: #fff;
+  font-size: 1rem;
+  transition: 0.3s ease, box-shadow 0.3s ease;
+}
+
+.auth-card input:focus {
+  outline: none;
+  border-color: #fff;
+  box-shadow: 0 0 15px rgba(255,255,255,0.6);
+}
+
+/* Button עם גראדיאנט ואפקט לחץ */
+.auth-card button {
+  width: 100%;
+  padding: 12px;
+  margin-top: 20px;
+  border: none;
+  border-radius: 15px;
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  color: #fff;
+  font-weight: bold;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: 0.3s ease, transform 0.2s ease;
+}
+
+.auth-card button:hover {
+  transform: scale(1.05);
+  box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+}
+
+/* Error */
+.error {
+  color: #ff6b6b;
+  margin-top: 10px;
+  font-size: 0.9rem;
+}
+
+
+/* הכפתור או הטקסט שמחליף בין Login ל-Register */
+.toggle {
+  text-align: left;
+  display: inline-block;      /* מאפשר לטקסט להישאר בשורה אחת */
+  white-space: nowrap;        /* מונע שבירת שורה */
+  cursor: pointer;            /* משנה את הסמן ליד הטקסט */
+  color: #fff;                /* צבע טקסט */
+  font-size: 0.9rem;          /* גודל גופן */
+  margin-top: 15px;           /* רווח מלמעלה */
+  transition: color 0.3s ease; /* אפקט חלק בהובר */
+}
+
+.toggle:hover {
+  color: #00bfff; /* צבע משנה בעת ריחוף */
+}
