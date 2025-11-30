@@ -11,10 +11,16 @@ function App() {
 
   async function getTodos() {
     try {
-      const todos = await service.getTasks();
-      setTodos(todos);
+      const result = await service.getTasks();
+      // וידוא שהנתון הוא מערך
+      if (Array.isArray(result)) {
+        setTodos(result);
+      } else {
+        console.error("Expected array from API, got:", result);
+        setTodos([]); // fallback למערך ריק
+      }
     } catch (err) {
-      // אם השרת מחזיר 401 או שגיאה אחרת, נשלח את המשתמש ל-login
+      console.error(err);
       localStorage.removeItem("token");
       navigate("/auth");
     } finally {
@@ -24,19 +30,31 @@ function App() {
 
   async function createTodo(e) {
     e.preventDefault();
-    await service.addTask(newTodo);
-    setNewTodo(""); // clear input
-    await getTodos(); // refresh tasks list
+    try {
+      await service.addTask(newTodo);
+      setNewTodo(""); // clear input
+      await getTodos(); // refresh tasks list
+    } catch (err) {
+      console.error("Error creating todo:", err);
+    }
   }
 
   async function updateCompleted(todo, isComplete) {
-    await service.setCompleted(todo.id, isComplete);
-    await getTodos(); // refresh tasks list
+    try {
+      await service.setCompleted(todo.id, isComplete);
+      await getTodos();
+    } catch (err) {
+      console.error("Error updating todo:", err);
+    }
   }
 
   async function deleteTodo(id) {
-    await service.deleteTask(id);
-    await getTodos(); // refresh tasks list
+    try {
+      await service.deleteTask(id);
+      await getTodos();
+    } catch (err) {
+      console.error("Error deleting todo:", err);
+    }
   }
 
   useEffect(() => {
@@ -60,26 +78,30 @@ function App() {
       </header>
       <section className="main" style={{ display: "block" }}>
         <ul className="todo-list">
-          {todos.map(todo => (
-            <li className={todo.isComplete ? "completed" : ""} key={todo.id}>
-              <div className="view">
-                <input
-                  className="toggle"
-                  type="checkbox"
-                  defaultChecked={todo.isComplete}
-                  onChange={(e) => updateCompleted(todo, e.target.checked)}
-                />
-                <label>{todo.name}</label>
-                <button className="destroy" onClick={() => deleteTodo(todo.id)}></button>
-              </div>
-            </li>
-          ))}
+          {Array.isArray(todos) && todos.length > 0 ? (
+            todos.map(todo => (
+              <li className={todo.isComplete ? "completed" : ""} key={todo.id}>
+                <div className="view">
+                  <input
+                    className="toggle"
+                    type="checkbox"
+                    defaultChecked={todo.isComplete}
+                    onChange={(e) => updateCompleted(todo, e.target.checked)}
+                  />
+                  <label>{todo.name}</label>
+                  <button className="destroy" onClick={() => deleteTodo(todo.id)}></button>
+                </div>
+              </li>
+            ))
+          ) : (
+            <li>No tasks available</li>
+          )}
         </ul>
       </section>
+      <footer>
         כל הזכויות שמורות לנועה קשת ©️
-
+      </footer>
     </section>
-    
   );
 }
 
